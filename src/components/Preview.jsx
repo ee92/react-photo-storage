@@ -21,7 +21,7 @@ class Preview extends React.Component {
   }
 
   writeUserData() {
-    console.log(storage.ref().child('user'))
+    console.log(storage.ref().child('user').name)
     storage.ref().child('users/' + this.props.user.uid).put(this.state.file).then((snap) => {
       console.log('stored')
     });

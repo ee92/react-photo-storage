@@ -8,32 +8,12 @@ class Main extends React.Component {
     this.state = {
       user: null
     }
-    this.login = this.login.bind(this)
-    this.logout = this.logout.bind(this)
-  }
-
-  login() {
-    auth.signInWithPopup(provider).then((result) => {
-      this.setState({
-          user: result.user
-      })
-    })
-  }
-
-  logout() {
-    auth.signOut().then((result) => {
-      this.setState({
-        user: null
-      })
-    })
+    this.login = () => { auth.signInWithPopup(provider) }
+    this.logout = () => { auth.signOut()}
   }
 
   componentDidMount() {
-    auth.onAuthStateChanged((user) => {
-      if (user) {
-        this.setState({user})
-      }
-    })
+    auth.onAuthStateChanged((user) => { this.setState({user}) })
   }
 
   render() {
@@ -46,7 +26,7 @@ class Main extends React.Component {
       <h4>Log in to use photo-loader</h4>
 
     let userInfo = this.state.user ?
-      <h5>Signed in using {this.state.user.email}</h5> :
+      <h5>Signed in using {this.state.user.photoURL}</h5> :
       null
 
     return (
@@ -58,5 +38,4 @@ class Main extends React.Component {
     )
   }
 }
-
 module.exports = Main
