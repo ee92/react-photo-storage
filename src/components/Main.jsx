@@ -1,6 +1,6 @@
 const React = require('react')
 const Preview = require('./Preview')
-import firebase, { auth, provider } from '../firebase'
+import firebase, { auth, provider, storage } from '../firebase'
 
 class Main extends React.Component {
   constructor(props) {
@@ -26,7 +26,7 @@ class Main extends React.Component {
       <h4>Log in to use photo-loader</h4>
 
     let userInfo = this.state.user ?
-      <h5>Signed in using {this.state.user.photoURL}</h5> :
+      <h5>Signed in using {this.state.user.email}</h5> :
       null
 
     return (
