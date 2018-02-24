@@ -39,6 +39,7 @@ class Preview extends React.Component {
 
     return (
       <div>
+        <a href={window.location.href + "?user=" + this.state.user.uid}>{window.location.href}</a><br/>
         <input type="file" onChange={this.handleSelect}/>
         <img src={this.state.url} style={previewStyle}/>
         <Upload

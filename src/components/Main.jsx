@@ -1,6 +1,6 @@
 const React = require('react')
 const Preview = require('./Preview')
-const Photos = require('./Photos')
+const Folder = require('./Folder')
 import firebase, { auth, provider } from '../firebase'
 class Main extends React.Component {
   constructor(props) {
@@ -23,8 +23,7 @@ class Main extends React.Component {
       <button onClick={this.login}>Log In</button>
     let uploader = this.state.user ?
       <div>
-        <Preview user={this.state.user}/>
-        <Photos user={this.state.user}/>
+        <Folder user={this.state.user}/>
       </div> :
       <h4>Log in to use photo-loader</h4>
     let userInfo = this.state.user ?
