@@ -1,4 +1,5 @@
 const React = require('react')
+const Preview = require('./Preview')
 import firebase, { storage, database } from '../firebase'
 
 class Folder extends React.Component {
@@ -7,6 +8,7 @@ class Folder extends React.Component {
     this.state = {
       user: this.props.user,
       create: false,
+      path: this.props.user.uid,
       folders: []
     }
     this.showInput = this.showInput.bind(this)
@@ -18,11 +20,12 @@ class Folder extends React.Component {
   }
 
   createFolder() {
-    let key = database.ref().child(this.props.user.uid).push().key
-    database.ref().child(this.props.user.uid).child(key).set({
+    let key = database.ref().child(this.state.path).push().key
+    database.ref().child(this.state.path).child(key).set({
       "folder" : true,
       "name" : this.input.value
     }).then(() => {
+      //redundant
       let folders = this.state.folders.slice()
       folders.push(key)
       this.setState({folders})
@@ -31,9 +34,37 @@ class Folder extends React.Component {
   }
 
   componentDidMount() {
-    database.ref(this.props.user.uid).on('value', (snap) => {
-      console.log(snap.val())
+    const ref = database.ref(this.props.path)
 
+    ref.on('child_added', (child) => {
+      let images = this.state.images.slice()
+      images.push({
+        key: child.key,
+        url: child.val().url,
+        time: child.val().time,
+        name: child.val().name
+      })
+      this.setState({images})
+    })
+
+    ref.on('child_removed', (child) => {
+      let images = this.state.images.filter((image) => {
+        return image.key != child.key
+      })
+      this.setState({images})
+    })
+
+    ref.on('child_changed', (child) => {
+      let images = this.state.images.filter((image) => {
+        return image.key != child.key
+      })
+      images.push({
+        key: child.key,
+        url: child.val().url,
+        time: child.val().time,
+        name: child.val().name
+      })
+      this.setState({images})
     })
   }
 
@@ -52,6 +83,10 @@ class Folder extends React.Component {
     return (
       <div>
         {newFolder}
+        <Preview
+          user={this.props.user}
+          path={this.state.path}
+        />
         {albums}
       </div>
     )

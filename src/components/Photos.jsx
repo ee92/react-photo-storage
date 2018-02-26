@@ -13,8 +13,8 @@ class Photos extends React.Component {
   }
 
   deletePhoto(event) {
-    storage.ref().child(this.state.user.uid).child(event.target.name).delete()
-    database.ref().child(this.state.user.uid).child(event.target.name).remove()
+    storage.ref().child(this.props.path).delete()
+    database.ref().child(this.props.path).remove()
   }
 
   componentDidMount() {

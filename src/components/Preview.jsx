@@ -8,24 +8,22 @@ class Preview extends React.Component {
       user: this.props.user,
       file: null,
       url: null,
-      input: null
+      path: this.props.path
     }
     this.handleSelect = this.handleSelect.bind(this)
     this.handleUpload = this.handleUpload.bind(this)
   }
 
-  handleSelect(e) {
+  handleSelect() {
     this.setState({
-      input: e.target,
-      file: e.target.files[0],
-      url: URL.createObjectURL(e.target.files[0])
+      file: this.input.files[0],
+      url: URL.createObjectURL(this.input.files[0])
     })
   }
 
   handleUpload() {
-    this.state.input.value = ""
+    this.input.value = ""
     this.setState({
-      input: null,
       file: null,
       url: null
     })
@@ -39,14 +37,19 @@ class Preview extends React.Component {
 
     return (
       <div>
-        <a href={window.location.href + "?user=" + this.state.user.uid}>{window.location.href}</a><br/>
-        <input type="file" onChange={this.handleSelect}/>
+        <input
+          type="file"
+          onChange={this.handleSelect}
+          ref={(input) => {this.input = input}}
+        />
         <img src={this.state.url} style={previewStyle}/>
         <Upload
           handleUpload={this.handleUpload}
           file={this.state.file}
           user={this.state.user}
-          input={this.state.input}/>
+          input={this.input}
+          path={this.state.path}
+        />
       </div>
     );
   }

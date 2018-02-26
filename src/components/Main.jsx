@@ -17,11 +17,10 @@ class Main extends React.Component {
   }
 
   render() {
-
     let authButton = this.state.user ?
       <button onClick={this.logout}>Log Out</button> :
       <button onClick={this.login}>Log In</button>
-    let uploader = this.state.user ?
+    let app = this.state.user ?
       <div>
         <Folder user={this.state.user}/>
       </div> :
@@ -35,7 +34,7 @@ class Main extends React.Component {
         <h3>{this.props.name}</h3>
         {userInfo}
         {authButton}
-        {uploader}
+        {app}
       </div>
     )
   }

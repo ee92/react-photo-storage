@@ -8,11 +8,10 @@ class Upload extends React.Component {
   }
 
   storePhoto() {
-    const key = database.ref().child(this.props.user.uid).push().key
-    const image = storage.ref().child(this.props.user.uid).child(key)
+    const key = database.ref(this.props.path).push().key
+    const image = storage.ref(this.props.path).child(key)
     image.put(this.props.file).then((snap) => {
-      console.log(this.props.user)
-      database.ref().child(this.props.user.uid).child(key).set({
+      database.ref(this.props.path).child(key).set({
         "url" : snap.metadata.downloadURLs[0],
         "time" : snap.metadata.timeCreated,
         "name" : this.props.input.value
