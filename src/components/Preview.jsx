@@ -39,6 +39,7 @@ class Preview extends React.Component {
       <div>
         <input
           type="file"
+          accept="image/*"
           onChange={this.handleSelect}
           ref={(input) => {this.input = input}}
         />

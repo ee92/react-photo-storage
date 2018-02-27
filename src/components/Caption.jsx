@@ -16,7 +16,10 @@ class Caption extends React.Component {
   }
 
   saveCaption() {
-    database.ref(this.props.path).child(this.props.file).update({
+    let path = this.props.parent ?
+      this.props.user.uid :
+      this.props.user.uid + "/" + this.props.parent
+    database.ref(path).child(this.props.file).update({
       "name" : this.input.value
     }).then(this.changeCaption())
   }
@@ -29,7 +32,7 @@ class Caption extends React.Component {
           <button onClick={this.changeCaption}>edit</button>
         </div> :
         <div>
-          <input ref={(input) => this.input = input}/>
+          <input ref={(input) => this.input = input} defaultValue={this.props.name}/>
           <button onClick={this.saveCaption}>done</button>
         </div>
     );

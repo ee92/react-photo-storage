@@ -83,27 +83,27 @@ class Folder extends React.Component {
         return {files}
       })
     })
-    //
-    // ref.on('child_removed', (child) => {
-    //   let files = this.state.files.filter((file) => {
-    //     return file.key != child.key
-    //   })
-    //   this.setState({files})
-    // })
-    //
-    // ref.on('child_changed', (child) => {
-    //   let files = this.state.files.filter((file) => {
-    //     return file.key != child.key
-    //   })
-    //   files.push({
-    //     folder: child.val().folder,
-    //     key: child.key,
-    //     url: child.val().url,
-    //     name: child.val().name,
-    //     parent: child.val().parent
-    //   })
-    //   this.setState({files})
-    // })
+
+    this.ref.on('child_removed', (child) => {
+      let files = this.state.files.filter((file) => {
+        return file.key != child.key
+      })
+      this.setState({files})
+    })
+
+    this.ref.on('child_changed', (child) => {
+      let files = this.state.files.filter((file) => {
+        return file.key != child.key
+      })
+      files.push({
+        folder: child.val().folder,
+        key: child.key,
+        url: child.val().url,
+        name: child.val().name,
+        parent: child.val().parent
+      })
+      this.setState({files})
+    })
   }
 
   componentDidMount() {
@@ -172,11 +172,12 @@ class Folder extends React.Component {
       </div> :
       <button onClick={this.showInput}>create album</button>
 
-    let backButton = (
+    let backButton = (this.state.parent != "") ?
       <div>
         <button onClick={this.goBack}> back </button>
-      </div>
-    )
+      </div> :
+      null
+
 
     return (
       <div>
