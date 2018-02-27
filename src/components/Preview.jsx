@@ -48,7 +48,7 @@ class Preview extends React.Component {
           file={this.state.file}
           user={this.state.user}
           input={this.input}
-          path={this.state.path}
+          parent={this.props.parent}
         />
       </div>
     );

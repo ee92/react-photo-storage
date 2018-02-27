@@ -16,7 +16,7 @@ class Caption extends React.Component {
   }
 
   saveCaption() {
-    database.ref().child(this.props.user.uid).child(this.props.image).update({
+    database.ref(this.props.path).child(this.props.file).update({
       "name" : this.input.value
     }).then(this.changeCaption())
   }
