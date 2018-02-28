@@ -2,26 +2,22 @@ const React = require('react')
 const Upload = require('./Upload')
 
 class Preview extends React.Component {
-  constructor(props){
-    super(props)
-    this.state = {
-      user: this.props.user,
-      file: null,
-      url: null,
-      path: this.props.path
-    }
-    this.handleSelect = this.handleSelect.bind(this)
-    this.handleUpload = this.handleUpload.bind(this)
+
+  state = {
+    user: this.props.user,
+    file: null,
+    url: null,
+    path: this.props.path
   }
 
-  handleSelect() {
+  handleSelect = () => {
     this.setState({
       file: this.input.files[0],
       url: URL.createObjectURL(this.input.files[0])
     })
   }
 
-  handleUpload() {
+  handleUpload = () => {
     this.input.value = ""
     this.setState({
       file: null,
@@ -52,7 +48,7 @@ class Preview extends React.Component {
           parent={this.props.parent}
         />
       </div>
-    );
+    )
   }
 }
 module.exports = Preview

@@ -2,12 +2,8 @@ const React = require('react')
 import firebase, { storage, database } from '../firebase'
 
 class Upload extends React.Component {
-  constructor(props){
-    super(props)
-    this.storePhoto = this.storePhoto.bind(this)
-  }
 
-  storePhoto() {
+  storePhoto = () => {
     const key = database.ref(this.props.user.uid).push().key
     const image = storage.ref(this.props.user.uid).child(key)
     image.put(this.props.file).then((snap) => {

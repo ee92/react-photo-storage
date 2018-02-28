@@ -2,20 +2,16 @@ const React = require('react')
 import firebase, { database } from '../firebase'
 
 class Caption extends React.Component {
-  constructor(props){
-    super(props)
-    this.state = {
-      hidden: true
-    }
-    this.changeCaption = this.changeCaption.bind(this)
-    this.saveCaption = this.saveCaption.bind(this)
+
+  state = {
+    hidden: true
   }
 
-  changeCaption() {
+  changeCaption = () => {
     this.setState({ hidden: !this.state.hidden })
   }
 
-  saveCaption() {
+  saveCaption = () => {
     let path = this.props.parent ?
       this.props.user.uid :
       this.props.user.uid + "/" + this.props.parent

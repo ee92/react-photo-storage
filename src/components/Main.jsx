@@ -2,15 +2,15 @@ const React = require('react')
 const Preview = require('./Preview')
 const Folder = require('./Folder')
 import firebase, { auth, provider } from '../firebase'
+
 class Main extends React.Component {
-  constructor(props) {
-    super(props)
-    this.state = {
-      user: null
-    }
-    this.login = () => { auth.signInWithPopup(provider) }
-    this.logout = () => { auth.signOut()}
+
+  state = {
+    user: null
   }
+
+  login = () => { auth.signInWithPopup(provider) }
+  logout = () => { auth.signOut()}
 
   componentDidMount() {
     auth.onAuthStateChanged((user) => { this.setState({user}) })

@@ -4,36 +4,27 @@ const Caption = require('./Caption')
 import firebase, { storage, database } from '../firebase'
 
 class Folder extends React.Component {
-  constructor(props){
-    super(props)
-    this.state = {
-      user: this.props.user,
-      create: false,
-      parent: "",
-      files: []
-    }
-    this.showInput = this.showInput.bind(this)
-    this.createFolder = this.createFolder.bind(this)
-    this.deleteFile = this.deleteFile.bind(this)
-    this.openFolder = this.openFolder.bind(this)
-    this.handleChange = this.handleChange.bind(this)
-    this.goBack = this.goBack.bind(this)
 
-    this.ref = null
+  state = {
+    user: this.props.user,
+    create: false,
+    parent: "",
+    files: []
   }
+  ref = null
 
-  showInput() {
+  showInput = () => {
     this.setState({create: !this.state.create})
   }
 
-  deleteFile(e) {
+  deleteFile = (e) => {
     if (e.target.folder == "false") {
       storage.ref(this.props.user.uid).child(e.target.name).delete()
     }
     database.ref(this.props.user.uid).child(e.target.name).remove()
   }
 
-  createFolder() {
+  createFolder = () => {
     let key = database.ref(this.props.user.uid).push().key
     database.ref(this.props.user.uid).child(key).set({
       "folder" : true,
@@ -43,7 +34,7 @@ class Folder extends React.Component {
     this.showInput()
   }
 
-  openFolder(e) {
+  openFolder = (e) => {
     this.setState({
       parent: e.target.getAttribute('parent'),
       files: []
@@ -52,7 +43,7 @@ class Folder extends React.Component {
     })
   }
 
-  goBack() {
+  goBack = () => {
     if (this.state.parent) {
       database.ref(this.props.user.uid + "/" + this.state.parent).once('value', (snap) => {
         this.setState({
@@ -65,7 +56,7 @@ class Folder extends React.Component {
     }
   }
 
-  handleChange() {
+  handleChange = () => {
     if (this.ref) {this.ref.off()}
     this.ref = database.ref(this.props.user.uid).orderByChild('parent').equalTo(this.state.parent)
 
