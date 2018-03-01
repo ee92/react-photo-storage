@@ -1,7 +1,8 @@
 const React = require('react')
 import firebase, { storage, database } from '../firebase'
+import RaisedButton from 'material-ui/RaisedButton'
 
-class Upload extends React.Component {
+class Uploader extends React.Component {
 
   storePhoto = () => {
     const key = database.ref(this.props.user.uid).push().key
@@ -17,13 +18,20 @@ class Upload extends React.Component {
   }
 
   render() {
+    const styles = {
+      button: {
+        margin: 12
+      }
+    }
     return (
       <span>
         { this.props.file ?
-          <button onClick={this.storePhoto}>upload</button> :
+          <RaisedButton onClick={this.storePhoto}
+            label="confirm"
+            style={styles.button}></RaisedButton> :
           null }
       </span>
     );
   }
 }
-module.exports = Upload
+module.exports = Uploader

@@ -1,5 +1,7 @@
 const React = require('react')
-const Upload = require('./Upload')
+const Uploader = require('./Uploader')
+import Upload from 'material-ui-upload/Upload'
+import RaisedButton from 'material-ui/RaisedButton'
 
 class Preview extends React.Component {
 
@@ -10,7 +12,7 @@ class Preview extends React.Component {
     path: this.props.path
   }
 
-  handleSelect = () => {
+  handleSelect = (e) => {
     this.setState({
       file: this.input.files[0],
       url: URL.createObjectURL(this.input.files[0])
@@ -18,7 +20,7 @@ class Preview extends React.Component {
   }
 
   handleUpload = () => {
-    this.input.value = ""
+    // this.input.value = ""
     this.setState({
       file: null,
       url: null
@@ -31,16 +33,34 @@ class Preview extends React.Component {
       maxWidth: "100px"
     }
 
+    const styles = {
+      button: {
+        margin: 12
+      },
+      imageInput: {
+        cursor: 'pointer',
+        display: 'none'
+      }
+    }
+
     return (
       <div>
-        <input
-          type="file"
-          accept="image/*"
-          onChange={this.handleSelect}
-          ref={(input) => {this.input = input}}
-        />
+        <RaisedButton
+          label="Upload"
+          labelPosition="before"
+          style={styles.button}
+          containerElement="label"
+        >
+          <input
+            type="file"
+            accept="image/*"
+            onChange={this.handleSelect}
+            ref={(input) => {this.input = input}}
+            style={styles.imageInput}
+          />
+        </RaisedButton>
         <img src={this.state.url} style={previewStyle}/>
-        <Upload
+        <Uploader
           handleUpload={this.handleUpload}
           file={this.state.file}
           user={this.state.user}

@@ -2,6 +2,10 @@ const React = require('react')
 const Preview = require('./Preview')
 const Folder = require('./Folder')
 import firebase, { auth, provider } from '../firebase'
+import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider'
+import getMuiTheme from 'material-ui/styles/getMuiTheme'
+import {deepOrange500} from 'material-ui/styles/colors'
+import RaisedButton from 'material-ui/RaisedButton'
 
 class Main extends React.Component {
 
@@ -17,9 +21,19 @@ class Main extends React.Component {
   }
 
   render() {
+    const styles = {
+      button: {
+        margin: 12
+      }
+    }
+
     let authButton = this.state.user ?
-      <button onClick={this.logout}>Log Out</button> :
-      <button onClick={this.login}>Log In</button>
+      <RaisedButton onClick={this.logout}
+        style={styles.button}
+        label="Log Out"></RaisedButton> :
+      <RaisedButton onClick={this.login}
+        style={styles.button}
+        label="log in"></RaisedButton>
     let app = this.state.user ?
       <div>
         <Folder user={this.state.user}/>
@@ -29,13 +43,22 @@ class Main extends React.Component {
       <h5>Signed in using {this.state.user.email}</h5> :
       null
 
+    const muiTheme = getMuiTheme({
+      palette: {
+        primary1Color: deepOrange500,
+        accent1Color: deepOrange500
+      }
+    })
+
     return (
-      <div>
-        <h3>{this.props.name}</h3>
-        {userInfo}
-        {authButton}
-        {app}
-      </div>
+      <MuiThemeProvider muiTheme={muiTheme}>
+        <div>
+          <h3>{this.props.name}</h3>
+          {userInfo}
+          {authButton}
+          {app}
+        </div>
+      </MuiThemeProvider>
     )
   }
 }

@@ -2,6 +2,10 @@ const React = require('react')
 const Preview = require('./Preview')
 const Caption = require('./Caption')
 import firebase, { storage, database } from '../firebase'
+import RaisedButton from 'material-ui/RaisedButton'
+import {GridList, GridTile} from 'material-ui/GridList'
+import {Card} from 'material-ui/Card'
+import TextField from 'material-ui/TextField'
 
 class Folder extends React.Component {
 
@@ -11,32 +15,31 @@ class Folder extends React.Component {
     parent: "",
     files: []
   }
-  ref = null
 
   showInput = () => {
     this.setState({create: !this.state.create})
   }
 
-  deleteFile = (e) => {
-    if (e.target.folder == "false") {
-      storage.ref(this.props.user.uid).child(e.target.name).delete()
+  deleteFile = (key, folder) => {
+    if (folder == false) {
+      storage.ref(this.props.user.uid).child(key).delete()
     }
-    database.ref(this.props.user.uid).child(e.target.name).remove()
+    database.ref(this.props.user.uid).child(key).remove()
   }
 
   createFolder = () => {
     let key = database.ref(this.props.user.uid).push().key
     database.ref(this.props.user.uid).child(key).set({
       "folder" : true,
-      "name" : this.input.value,
+      "name" : this.refs.folder.input.value,
       "parent" : ""
     })
     this.showInput()
   }
 
-  openFolder = (e) => {
+  openFolder = (parent) => {
     this.setState({
-      parent: e.target.getAttribute('parent'),
+      parent: parent,
       files: []
     }, () => {
       this.handleChange()
@@ -103,17 +106,13 @@ class Folder extends React.Component {
 
   render() {
 
-    const imgStyle = {
-      maxHeight: "400px",
-      maxWidth: "400px"
-    }
-
-    const divStyle ={
-      padding: "10px",
-      margin: "5px",
-      textAlign: "center",
-      border: "solid black 1px",
-      maxWidth: "50%"
+    const styles = {
+      button: {
+        margin: 12
+      },
+      card: {
+        textAlign: 'center'
+      }
     }
 
     let files = (this.state.files.length == 0) ?
@@ -122,35 +121,42 @@ class Folder extends React.Component {
         {this.state.files.slice(0).reverse().map((file) => {
           if (file.folder) {
             return(
-              <div key={file.key} style={divStyle}>
-                <button onClick={this.openFolder} parent={file.key}>open</button>
+
+              <Card style={styles.card} key={file.key}>
+                <RaisedButton onClick={this.openFolder.bind(this, file.key)}
+                  label="open"
+                  style={styles.button}></RaisedButton>
                 <Caption
                   name={file.name}
                   file={file.key}
                   user={this.props.user}
                   parent={this.state.parent}
                 />
-                <button onClick={this.deleteFile}
+                <RaisedButton onClick={this.deleteFile.bind(this, file.key, true)}
                   name={file.key}
                   folder="true"
-                >remove</button>
-              </div>
+                  label="remove"
+                  style={styles.button}
+                ></RaisedButton>
+              </Card>
             )
           }
           else {
             return(
-              <div key={file.key} style={divStyle}>
-                <img src={file.url} style={imgStyle}/>
+              <Card style={styles.card} key={file.key}>
+                <img src={file.url}/>
                 <Caption
                   name={file.name}
                   file={file.key}
                   user={this.props.user}
                   parent={this.state.parent}/>
-                <button onClick={this.deleteFile}
+                <RaisedButton onClick={this.deleteFile.bind(this, file.key, false)}
                   name={file.key}
                   folder="false"
-                >remove</button>
-              </div>
+                  label="remove"
+                  style={styles.button}
+                ></RaisedButton>
+              </Card>
             )
           }
         })}
@@ -158,14 +164,20 @@ class Folder extends React.Component {
 
     let newFolder = (this.state.create) ?
       <div>
-        <input ref={(input) => this.input = input}/>
-        <button onClick={this.createFolder}>create</button>
+        <TextField ref='folder'/>
+        <RaisedButton onClick={this.createFolder}
+          style={styles.button}
+          label="create"></RaisedButton>
       </div> :
-      <button onClick={this.showInput}>create album</button>
+      <RaisedButton onClick={this.showInput}
+        style={styles.button}
+        label="create folder"></RaisedButton>
 
     let backButton = (this.state.parent != "") ?
       <div>
-        <button onClick={this.goBack}> back </button>
+        <RaisedButton onClick={this.goBack}
+          style={styles.button}
+          label="<-"></RaisedButton>
       </div> :
       null
 
