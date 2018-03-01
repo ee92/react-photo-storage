@@ -1,33 +1,46 @@
 const React = require('react')
-const Uploader = require('./Uploader')
 import Upload from 'material-ui-upload/Upload'
 import RaisedButton from 'material-ui/RaisedButton'
+import firebase, { storage, database } from '../firebase'
 
 class Preview extends React.Component {
 
   state = {
     user: this.props.user,
-    file: null,
-    url: null,
-    path: this.props.path
+    files: null
   }
 
   handleSelect = (e) => {
     this.setState({
-      file: this.input.files[0],
-      url: URL.createObjectURL(this.input.files[0])
+      files: this.input.files
+    }, () => {
+      for(var i=0; i<this.state.files.length; i++) {
+        this.storePhoto(this.state.files[i])
+      }
     })
   }
 
   handleUpload = () => {
-    // this.input.value = ""
     this.setState({
-      file: null,
-      url: null
+      file: null
+    })
+  }
+
+  storePhoto = (file) => {
+    const key = database.ref(this.props.user.uid).push().key
+    const image = storage.ref(this.props.user.uid).child(key)
+    image.put(file).then((snap) => {
+      database.ref(this.props.user.uid).child(key).set({
+        "folder": false,
+        "url" : snap.metadata.downloadURLs[0],
+        "name" : this.input.value,
+        "parent" : this.props.parent
+      }).then(this.handleUpload())
     })
   }
 
   render() {
+
     const previewStyle = {
       maxHeight: "100px",
       maxWidth: "100px"
@@ -54,19 +67,12 @@ class Preview extends React.Component {
           <input
             type="file"
             accept="image/*"
+            multiple
             onChange={this.handleSelect}
             ref={(input) => {this.input = input}}
             style={styles.imageInput}
           />
         </RaisedButton>
-        <img src={this.state.url} style={previewStyle}/>
-        <Uploader
-          handleUpload={this.handleUpload}
-          file={this.state.file}
-          user={this.state.user}
-          input={this.input}
-          parent={this.props.parent}
-        />
       </div>
     )
   }

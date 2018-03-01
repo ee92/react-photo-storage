@@ -4,7 +4,7 @@ const Caption = require('./Caption')
 import firebase, { storage, database } from '../firebase'
 import RaisedButton from 'material-ui/RaisedButton'
 import {GridList, GridTile} from 'material-ui/GridList'
-import {Card} from 'material-ui/Card'
+import {Card, CardMedia} from 'material-ui/Card'
 import TextField from 'material-ui/TextField'
 
 class Folder extends React.Component {
@@ -111,7 +111,8 @@ class Folder extends React.Component {
         margin: 12
       },
       card: {
-        textAlign: 'center'
+        textAlign: 'center',
+        margin: 48
       }
     }
 
@@ -144,7 +145,9 @@ class Folder extends React.Component {
           else {
             return(
               <Card style={styles.card} key={file.key}>
-                <img src={file.url}/>
+                <CardMedia>
+                  <img src={file.url}/>
+                </CardMedia>
                 <Caption
                   name={file.name}
                   file={file.key}
@@ -164,7 +167,9 @@ class Folder extends React.Component {
 
     let newFolder = (this.state.create) ?
       <div>
-        <TextField ref='folder'/>
+        <TextField ref='folder'
+          onFocusOut={this.showInput}
+        />
         <RaisedButton onClick={this.createFolder}
           style={styles.button}
           label="create"></RaisedButton>
