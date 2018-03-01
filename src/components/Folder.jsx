@@ -32,7 +32,7 @@ class Folder extends React.Component {
     database.ref(this.props.user.uid).child(key).set({
       "folder" : true,
       "name" : this.refs.folder.input.value,
-      "parent" : ""
+      "parent" : this.state.parent
     })
     this.showInput()
   }
