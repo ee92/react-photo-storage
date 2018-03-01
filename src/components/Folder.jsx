@@ -16,9 +16,7 @@ class Folder extends React.Component {
     files: []
   }
 
-  showInput = () => {
-    this.setState({create: !this.state.create})
-  }
+  folderInput = () => { this.setState({create: !this.state.create}) }
 
   deleteFile = (key, folder) => {
     if (folder == false) {
@@ -34,7 +32,7 @@ class Folder extends React.Component {
       "name" : this.refs.folder.input.value,
       "parent" : this.state.parent
     })
-    this.showInput()
+    this.folderInput()
   }
 
   openFolder = (parent) => {
@@ -112,7 +110,9 @@ class Folder extends React.Component {
       },
       card: {
         textAlign: 'center',
-        margin: 48
+        margin: 'auto',
+        marginBottom: 24,
+        maxWidth: '50%'
       }
     }
 
@@ -122,9 +122,9 @@ class Folder extends React.Component {
         {this.state.files.slice(0).reverse().map((file) => {
           if (file.folder) {
             return(
-
-              <Card style={styles.card} key={file.key}>
-                <RaisedButton onClick={this.openFolder.bind(this, file.key)}
+              <Card style={styles.card} key={file.key} zDepth={2}>
+                <RaisedButton
+                  onClick={this.openFolder.bind(this, file.key)}
                   label="open"
                   style={styles.button}></RaisedButton>
                 <Caption
@@ -133,7 +133,8 @@ class Folder extends React.Component {
                   user={this.props.user}
                   parent={this.state.parent}
                 />
-                <RaisedButton onClick={this.deleteFile.bind(this, file.key, true)}
+                <RaisedButton
+                  onClick={this.deleteFile.bind(this, file.key, true)}
                   name={file.key}
                   folder="true"
                   label="remove"
@@ -144,7 +145,7 @@ class Folder extends React.Component {
           }
           else {
             return(
-              <Card style={styles.card} key={file.key}>
+              <Card style={styles.card} key={file.key} zDepth={2}>
                 <CardMedia>
                   <img src={file.url}/>
                 </CardMedia>
@@ -168,13 +169,14 @@ class Folder extends React.Component {
     let newFolder = (this.state.create) ?
       <div>
         <TextField ref='folder'
-          onFocusOut={this.showInput}
+          onBlur={this.folderInput}
+          autoFocus={true}
         />
         <RaisedButton onClick={this.createFolder}
           style={styles.button}
           label="create"></RaisedButton>
       </div> :
-      <RaisedButton onClick={this.showInput}
+      <RaisedButton onClick={this.folderInput}
         style={styles.button}
         label="create folder"></RaisedButton>
 

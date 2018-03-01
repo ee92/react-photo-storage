@@ -4,8 +4,8 @@ const Folder = require('./Folder')
 import firebase, { auth, provider } from '../firebase'
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider'
 import getMuiTheme from 'material-ui/styles/getMuiTheme'
-import {deepOrange500} from 'material-ui/styles/colors'
 import RaisedButton from 'material-ui/RaisedButton'
+import AppBar from 'material-ui/AppBar';
 
 class Main extends React.Component {
 
@@ -24,6 +24,9 @@ class Main extends React.Component {
     const styles = {
       button: {
         margin: 12
+      },
+      bar: {
+        marginBottom: 24
       }
     }
 
@@ -39,23 +42,16 @@ class Main extends React.Component {
         <Folder user={this.state.user}/>
       </div> :
       <h4>Log in to use photo-loader</h4>
-    let userInfo = this.state.user ?
-      <h5>Signed in using {this.state.user.email}</h5> :
-      null
-
-    const muiTheme = getMuiTheme({
-      palette: {
-        primary1Color: deepOrange500,
-        accent1Color: deepOrange500
-      }
-    })
 
     return (
-      <MuiThemeProvider muiTheme={muiTheme}>
+      <MuiThemeProvider>
         <div>
-          <h3>{this.props.name}</h3>
-          {userInfo}
-          {authButton}
+          <AppBar
+            title={this.props.name}
+            showMenuIconButton={false}
+            iconElementRight={authButton}
+            style={styles.bar}
+          />
           {app}
         </div>
       </MuiThemeProvider>
