@@ -4,8 +4,10 @@ const Caption = require('./Caption')
 import firebase, { storage, database } from '../firebase'
 import RaisedButton from 'material-ui/RaisedButton'
 import {GridList, GridTile} from 'material-ui/GridList'
-import {Card, CardMedia} from 'material-ui/Card'
+import {Card, CardMedia, CardTitle} from 'material-ui/Card'
 import TextField from 'material-ui/TextField'
+import sad from "./../../images/sad.png"
+
 
 class Folder extends React.Component {
 
@@ -26,6 +28,7 @@ class Folder extends React.Component {
   }
 
   createFolder = () => {
+    if (this.refs.folder.input.value == "") {return this.folderInput()}
     let key = database.ref(this.props.user.uid).push().key
     database.ref(this.props.user.uid).child(key).set({
       "folder" : true,
@@ -113,11 +116,21 @@ class Folder extends React.Component {
         margin: 'auto',
         marginBottom: 24,
         maxWidth: '50%'
+      },
+      noFiles: {
+        textAlign: 'center',
+        margin: 'auto',
+        maxWidth: '30%'
       }
     }
 
     let files = (this.state.files.length == 0) ?
-      <h4>you have no files</h4> :
+      <Card style={styles.noFiles}>
+        <CardMedia
+          overlay={<CardTitle subtitle="no files here"/>}>
+          <img src={sad}/>
+        </CardMedia>
+      </Card> :
       <div>
         {this.state.files.slice(0).reverse().map((file) => {
           if (file.folder) {
@@ -169,12 +182,12 @@ class Folder extends React.Component {
     let newFolder = (this.state.create) ?
       <div>
         <TextField ref='folder'
-          onBlur={this.folderInput}
+          onBlur={this.createFolder}
+          onKeyPress={(e) => {e.key=='Enter' &&  this.createFolder()}}
           autoFocus={true}
+          floatingLabelText='folder name'
         />
-        <RaisedButton onClick={this.createFolder}
-          style={styles.button}
-          label="create"></RaisedButton>
+
       </div> :
       <RaisedButton onClick={this.folderInput}
         style={styles.button}

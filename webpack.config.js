@@ -19,6 +19,10 @@ module.exports = {
       {
         test: /\.css$/,
         use: 'css-loader/locals'
+      },
+      {
+        test: /\.png$/,
+        use: 'url-loader'
       }
     ]
   },

@@ -30,6 +30,7 @@
     "babel-preset-stage-1": "^6.24.1",
     "css-loader": "^0.28.10",
     "nodemon": "^1.14.12",
+    "url-loader": "^0.6.2",
     "webpack": "^3.10.0"
   },
   "babel": {
