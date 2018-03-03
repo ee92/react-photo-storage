@@ -4,9 +4,10 @@ const Folder = require('./Folder')
 import firebase, { auth, provider } from '../firebase'
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider'
 import getMuiTheme from 'material-ui/styles/getMuiTheme'
-import RaisedButton from 'material-ui/RaisedButton'
+import FlatButton from 'material-ui/FlatButton'
 import AppBar from 'material-ui/AppBar'
 import Avatar from 'material-ui/Avatar'
+import {blueGrey500} from 'material-ui/styles/colors'
 
 class Main extends React.Component {
 
@@ -20,22 +21,23 @@ class Main extends React.Component {
 
   componentDidMount() {
     auth.onAuthStateChanged((user) => {
-      user ?
+      let avatar = user ? user.photoURL : null
       this.setState({
         user,
-        avatar: user.photoURL
+        avatar
       })
-      : this.setState({user})
     })
   }
 
   render() {
     const styles = {
       button: {
-        margin: 6
+        margin: 6,
+        color: 'white'
       },
       bar: {
-        marginBottom: 24
+        marginBottom: 24,
+        backgroundColor: blueGrey500
       },
       pic: {
         margin: 6,
@@ -45,19 +47,19 @@ class Main extends React.Component {
 
     let authButton = this.state.user ?
       <div>
-        <RaisedButton onClick={this.logout}
+        <FlatButton onClick={this.logout}
           style={styles.button}
-          label="Log Out"></RaisedButton>
+          label="Log Out"></FlatButton>
         <Avatar src={this.state.avatar} style={styles.pic}/>
       </div>
        :
-      <RaisedButton onClick={this.login}
+      <FlatButton onClick={this.login}
         style={styles.button}
-        label="log in"></RaisedButton>
+        label="log in"></FlatButton>
 
     let app = this.state.user ?
       <div>
-        <Folder user={this.state.user}/>
+        <Folder user={this.state.user} getFolder={this.getFolder}/>
       </div> :
       <h4>Log in to use photo-loader</h4>
 
@@ -65,7 +67,7 @@ class Main extends React.Component {
       <MuiThemeProvider>
         <div>
           <AppBar
-            title={this.props.name}
+            title='Photo Loader'
             showMenuIconButton={false}
             iconElementRight={authButton}
             style={styles.bar}

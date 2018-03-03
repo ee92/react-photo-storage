@@ -1,7 +1,9 @@
 const React = require('react')
 import Upload from 'material-ui-upload/Upload'
-import RaisedButton from 'material-ui/RaisedButton'
+import IconButton from 'material-ui/IconButton'
+import NewImage from 'material-ui/svg-icons/image/add-a-photo'
 import firebase, { storage, database } from '../firebase'
+import {blueGrey500} from 'material-ui/styles/colors'
 
 class Preview extends React.Component {
 
@@ -48,32 +50,37 @@ class Preview extends React.Component {
 
     const styles = {
       button: {
-        margin: 12
+        margin: 48
       },
       imageInput: {
         cursor: 'pointer',
-        display: 'none'
+        visability: 'hidden'
+      },
+      large: {
+        width: 100,
+        height: 100
       }
     }
 
     return (
-      <div>
-        <RaisedButton
-          label="Upload"
-          labelPosition="before"
+      <span>
+        <IconButton
+          onClick={() => this.input.click()}
+          iconStyle={styles.large}
           style={styles.button}
-          containerElement="label"
+          tooltip="ADD IMAGES"
         >
-          <input
-            type="file"
-            accept="image/*"
-            multiple
-            onChange={this.handleSelect}
-            ref={(input) => {this.input = input}}
-            style={styles.imageInput}
-          />
-        </RaisedButton>
-      </div>
+          <NewImage color={blueGrey500}/>
+        </IconButton>
+        <input
+          type="file"
+          accept="image/*"
+          multiple
+          onChange={this.handleSelect}
+          ref={(input) => {this.input = input}}
+          style={{display: 'none'}}
+        />
+      </span>
     )
   }
 }
