@@ -8,12 +8,12 @@ import {Card, CardMedia, CardTitle} from 'material-ui/Card'
 import {Toolbar, ToolbarGroup} from 'material-ui/Toolbar'
 import FloatingActionButton from 'material-ui/FloatingActionButton'
 import Back from 'material-ui/svg-icons/navigation/arrow-back'
-import NewFolder from 'material-ui/svg-icons/image/add-to-photos'
+import NewFolder from 'material-ui/svg-icons/file/create-new-folder'
 import TextField from 'material-ui/TextField'
 import Popover from 'material-ui/Popover'
 import Menu from 'material-ui/Menu'
 import MenuItem from 'material-ui/MenuItem'
-import {blueGrey500} from 'material-ui/styles/colors'
+import {blue500, blueGrey500} from 'material-ui/styles/colors'
 import sad from "./../../images/sad.png"
 
 
@@ -141,8 +141,7 @@ class Folder extends React.Component {
         maxWidth: '30%'
       },
       large: {
-        width: 100,
-        height: 100
+        transform: 'scale(3)'
       },
       input: {
         margin: 12
@@ -192,7 +191,7 @@ class Folder extends React.Component {
           style={styles.button}
           tooltip="NEW FOLDER"
           >
-            <NewFolder color={blueGrey500}/>
+            <NewFolder color={blue500}/>
         </IconButton>
       </span>
 

@@ -1,9 +1,9 @@
 const React = require('react')
 import Upload from 'material-ui-upload/Upload'
 import IconButton from 'material-ui/IconButton'
-import NewImage from 'material-ui/svg-icons/image/add-a-photo'
+import NewImage from 'material-ui/svg-icons/file/file-upload'
 import firebase, { storage, database } from '../firebase'
-import {blueGrey500} from 'material-ui/styles/colors'
+import {blue500} from 'material-ui/styles/colors'
 
 class Preview extends React.Component {
 
@@ -57,8 +57,7 @@ class Preview extends React.Component {
         visability: 'hidden'
       },
       large: {
-        width: 100,
-        height: 100
+        transform: 'scale(3)'
       }
     }
 
@@ -70,7 +69,7 @@ class Preview extends React.Component {
           style={styles.button}
           tooltip="ADD IMAGES"
         >
-          <NewImage color={blueGrey500}/>
+          <NewImage color={blue500}/>
         </IconButton>
         <input
           type="file"
