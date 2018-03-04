@@ -1,72 +1,82 @@
 const React = require('react')
 const Caption = require('./Caption')
 import firebase, { database } from '../firebase'
+import IconButton from 'material-ui/IconButton'
+import Delete from 'material-ui/svg-icons/action/delete'
+import Chip from 'material-ui/Chip'
 import RaisedButton from 'material-ui/RaisedButton'
+import FloatingActionButton from 'material-ui/FloatingActionButton'
 import TextField from 'material-ui/TextField'
-import {Card, CardMedia, CardTitle} from 'material-ui/Card'
+import Folder from 'material-ui/svg-icons/file/folder'
+import {GridList, GridTile} from 'material-ui/GridList'
+import {Card, CardMedia, CardTitle, CardActions} from 'material-ui/Card'
+import {blue500, grey600, red500, red100} from 'material-ui/styles/colors'
+import sad from "./../../images/sad.png"
 
 class Contents extends React.Component {
 
   render() {
+
     const styles = {
-      button: {
-        margin: 12
+      root: {
+        display: 'flex',
+        flexWrap: 'wrap',
+        marginBottom: 12
       },
-      card: {
-        textAlign: 'center',
-        margin: 'auto',
-        marginBottom: 24,
-        maxWidth: '50%'
+      folders: {
+        display: 'flex',
+        flexWrap: 'nowrap',
+        overflowX: 'auto'
+      },
+      images: {
+        overflowY: 'auto'
+      },
+      tile: {
+        transform: 'scale(1)'
+      },
+      button: {
+        cursor: 'pointer'
       }
     }
-    return (
 
-      this.props.files.slice().map((file) => {
-        if (file.folder) {
-          return(
-            <Card style={styles.card} key={file.key} zDepth={2}>
-              <RaisedButton
-                onClick={this.props.openFolder.bind(this, file.key)}
-                label="open"
-                style={styles.button}></RaisedButton>
-              <Caption
-                name={file.name}
-                file={file.key}
-                user={this.props.user}
-                parent={this.props.parent}
-              />
-              <RaisedButton
-                onClick={this.props.deleteFile.bind(this, file.key, true)}
-                name={file.key}
-                folder="true"
-                label="remove"
-                style={styles.button}
-              ></RaisedButton>
-            </Card>
-          )
-        }
-        else {
-          return(
-            <Card style={styles.card} key={file.key} zDepth={2}>
-              <CardMedia>
-                <img src={file.url}/>
-              </CardMedia>
-              <Caption
-                name={file.name}
-                file={file.key}
-                user={this.props.user}
-                parent={this.props.parent}/>
-              <RaisedButton
-                onClick={this.props.deleteFile.bind(this, file.key, false)}
-                name={file.key}
-                folder="false"
-                label="remove"
-                style={styles.button}
-              ></RaisedButton>
-            </Card>
-          )
-        }
-      })
+    return (
+      <div>
+        <div style={styles.root}>
+          <GridList
+            style={styles.folders}
+            cols={3.3}
+          >
+            {this.props.files.filter((file) => file.folder).map((file) =>
+              <GridTile
+                key={file.key}
+                cols={3.3}
+                title={file.name}
+                style={styles.tile}
+                actionIcon={
+                  <IconButton>
+                    <Delete onClick={this.props.deleteFile.bind(this, file.key, true)}
+                      hoverColor='white'
+                    />
+                  </IconButton>
+                }
+              >
+                <img src={sad}
+                  style={styles.button}
+                  onClick={this.props.openFolder.bind(this, file.key)}
+                />
+              </GridTile>
+            )}
+          </GridList>
+        </div>
+        <GridList cols={3} style={styles.images}>
+          {this.props.files.filter((file) => !file.folder).map((file) =>
+            <GridTile key={file.key}>
+              <img src={file.url}/>
+            </GridTile>
+          )}
+        </GridList>
+
+      </div>
     )
   }
 }

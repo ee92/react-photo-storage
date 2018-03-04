@@ -43,21 +43,16 @@ class Preview extends React.Component {
 
   render() {
 
-    const previewStyle = {
-      maxHeight: "100px",
-      maxWidth: "100px"
-    }
-
     const styles = {
       button: {
-        margin: 48
+        margin: 12
       },
       imageInput: {
         cursor: 'pointer',
         visability: 'hidden'
       },
       large: {
-        transform: 'scale(3)'
+        transform: 'scale(3.5)'
       }
     }
 

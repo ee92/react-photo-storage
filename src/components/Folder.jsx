@@ -13,7 +13,8 @@ import TextField from 'material-ui/TextField'
 import Popover from 'material-ui/Popover'
 import Menu from 'material-ui/Menu'
 import MenuItem from 'material-ui/MenuItem'
-import {blue500, blueGrey500} from 'material-ui/styles/colors'
+import Paper from 'material-ui/Paper'
+import {blue500, grey600} from 'material-ui/styles/colors'
 import sad from "./../../images/sad.png"
 
 
@@ -60,8 +61,7 @@ class Folder extends React.Component {
   openFolder = (parent) => {
     this.setState({
       parent: parent,
-      files: [],
-      name: name
+      files: []
     }, () => {
       this.handleChange()
     })
@@ -129,11 +129,12 @@ class Folder extends React.Component {
 
     const styles = {
       button: {
-        margin: 48
+        margin: 12
       },
       card: {
-        textAlign: 'center',
-        margin: 'auto'
+        display: 'inline-block',
+        padding: 12,
+        margin: 12
       },
       noFiles: {
         textAlign: 'center',
@@ -141,13 +142,14 @@ class Folder extends React.Component {
         maxWidth: '30%'
       },
       large: {
-        transform: 'scale(3)'
+        transform: 'scale(3.5)'
       },
       input: {
-        margin: 12
+        color: grey600
       },
       back: {
-        position: 'absolute',
+        position: 'fixed',
+        bottom: '0px',
         float: 'left',
         zIndex: 1
       }
@@ -155,10 +157,7 @@ class Folder extends React.Component {
 
     let files = (this.state.files.length == 0) ?
       <Card style={styles.noFiles}>
-        <CardMedia
-          overlay={<CardTitle subtitle="no files here"/>}>
-          <img src={sad}/>
-        </CardMedia>
+        <CardTitle subtitle="no files here"/>
       </Card> :
       <Contents files={this.state.files}
         user={this.props.user}
@@ -178,9 +177,10 @@ class Folder extends React.Component {
           <Menu>
             <TextField ref='folder'
               onKeyPress={(e) => {e.key=='Enter' &&  this.createFolder()}}
-              autoFocus={true}
               floatingLabelText='folder name'
-              style={styles.input}
+              underlineFocusStyle={styles.input}
+              style={styles.button}
+              autoFocus={true}
             />
             <FlatButton label="create"
               onClick={this.createFolder}/>
@@ -199,7 +199,7 @@ class Folder extends React.Component {
       <span style={styles.back}>
         <FloatingActionButton onClick={this.goBack}
           style={styles.button}
-          backgroundColor={blueGrey500}>
+          backgroundColor={grey600}>
           <Back/>
         </FloatingActionButton>
       </span> :
@@ -209,12 +209,16 @@ class Folder extends React.Component {
     return (
       <div>
         {backButton}
-        <div style={styles.card}>
-          {newFolder}
-          <Preview
-            user={this.props.user}
-            parent={this.state.parent}
-          />
+        <div style={{textAlign: 'center'}}>
+          <Paper style={styles.card}>
+            {newFolder}
+          </Paper>
+          <Paper style={styles.card}>
+            <Preview
+              user={this.props.user}
+              parent={this.state.parent}
+            />
+          </Paper>
         </div>
         {files}
       </div>

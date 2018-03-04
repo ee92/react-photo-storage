@@ -7,7 +7,7 @@ import getMuiTheme from 'material-ui/styles/getMuiTheme'
 import FlatButton from 'material-ui/FlatButton'
 import AppBar from 'material-ui/AppBar'
 import Avatar from 'material-ui/Avatar'
-import {blueGrey500} from 'material-ui/styles/colors'
+import {grey600} from 'material-ui/styles/colors'
 
 class Main extends React.Component {
 
@@ -36,8 +36,7 @@ class Main extends React.Component {
         color: 'white'
       },
       bar: {
-        marginBottom: 24,
-        backgroundColor: blueGrey500
+        backgroundColor: grey600
       },
       pic: {
         margin: 6,
