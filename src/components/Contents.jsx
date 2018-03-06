@@ -31,9 +31,6 @@ class Contents extends React.Component {
       images: {
         overflowY: 'auto'
       },
-      tile: {
-        transform: 'scale(1)'
-      },
       button: {
         cursor: 'pointer'
       }
@@ -50,12 +47,16 @@ class Contents extends React.Component {
               <GridTile
                 key={file.key}
                 cols={3.3}
-                title={file.name}
+                title=' '
+                actionPosition="right"
+                titlePosition="top"
+                titleBackground="linear-gradient(to bottom, rgba(0,0,0,0.7) 0%,rgba(0,0,0,0.3) 70%,rgba(0,0,0,0) 100%)"
                 style={styles.tile}
                 actionIcon={
                   <IconButton>
                     <Delete onClick={this.props.deleteFile.bind(this, file.key, true)}
-                      hoverColor='white'
+                      color='white'
+                      hoverColor='red'
                     />
                   </IconButton>
                 }
@@ -70,7 +71,20 @@ class Contents extends React.Component {
         </div>
         <GridList cols={3} style={styles.images}>
           {this.props.files.filter((file) => !file.folder).map((file) =>
-            <GridTile key={file.key}>
+            <GridTile key={file.key}
+              actionPosition="right"
+              titlePosition="top"
+              titleBackground="linear-gradient(to bottom, rgba(0,0,0,0.7) 0%,rgba(0,0,0,0.3) 70%,rgba(0,0,0,0) 100%)"
+              title=''
+              actionIcon={
+                <IconButton>
+                  <Delete onClick={this.props.deleteFile.bind(this, file.key, true)}
+                    hoverColor='red'
+                    color='white'
+                  />
+                </IconButton>
+              }
+            >
               <img src={file.url}/>
             </GridTile>
           )}
