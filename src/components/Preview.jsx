@@ -29,6 +29,7 @@ class Preview extends React.Component {
   }
 
   storePhoto = (file) => {
+    console.log(file)
     const key = database.ref(this.props.user.uid).push().key
     const image = storage.ref(this.props.user.uid).child(key)
     image.put(file).then((snap) => {
@@ -71,6 +72,7 @@ class Preview extends React.Component {
           accept="image/*"
           multiple
           onChange={this.handleSelect}
+          onClick={(event)=> {event.target.value = null}}
           ref={(input) => {this.input = input}}
           style={{display: 'none'}}
         />

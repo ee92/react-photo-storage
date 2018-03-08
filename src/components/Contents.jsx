@@ -41,12 +41,12 @@ class Contents extends React.Component {
         <div style={styles.root}>
           <GridList
             style={styles.folders}
-            cols={3.3}
+            cols={3}
           >
             {this.props.files.filter((file) => file.folder).map((file) =>
               <GridTile
                 key={file.key}
-                cols={3.3}
+                cols={3}
                 title=' '
                 actionPosition="right"
                 titlePosition="top"
@@ -75,7 +75,7 @@ class Contents extends React.Component {
               actionPosition="right"
               titlePosition="top"
               titleBackground="linear-gradient(to bottom, rgba(0,0,0,0.7) 0%,rgba(0,0,0,0.3) 70%,rgba(0,0,0,0) 100%)"
-              title=''
+              title=' '
               actionIcon={
                 <IconButton>
                   <Delete onClick={this.props.deleteFile.bind(this, file.key, true)}

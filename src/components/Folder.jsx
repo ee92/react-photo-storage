@@ -53,7 +53,8 @@ class Folder extends React.Component {
     database.ref(this.props.user.uid).child(key).set({
       "folder" : true,
       "name" : this.refs.folder.input.value,
-      "parent" : this.state.parent
+      "parent" : this.state.parent,
+      "key" : key
     })
     this.closeInput()
   }
@@ -81,10 +82,13 @@ class Folder extends React.Component {
   }
 
   handleChange = () => {
-    if (this.ref) {this.ref.off()}
-    this.ref = database.ref(this.props.user.uid).orderByChild('parent').equalTo(this.state.parent)
+    this.ref && this.ref.off()
+    this.query && this.query.off()
 
-    this.ref.on('child_added', (child) => {
+    this.ref = database.ref(this.props.user.uid)
+    this.query = this.ref.orderByChild('parent').equalTo(this.state.parent)
+
+    this.query.on('child_added', (child) => {
       let f = {
         folder: child.val().folder,
         key: child.key,
@@ -100,13 +104,23 @@ class Folder extends React.Component {
     })
 
     this.ref.on('child_removed', (child) => {
+      if (child.val().folder) {
+        database.ref(this.props.user.uid).orderByChild('parent').equalTo(child.key).on("value", (snap) => {
+          snap.forEach((snap) => {
+            snap.ref.remove()
+          })
+        })
+      } else {
+        storage.ref(this.props.user.uid).child(child.key).delete()
+      }
+
       let files = this.state.files.filter((file) => {
         return file.key != child.key
       })
       this.setState({files})
     })
 
-    this.ref.on('child_changed', (child) => {
+    this.query.on('child_changed', (child) => {
       let files = this.state.files.filter((file) => {
         return file.key != child.key
       })
