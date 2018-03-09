@@ -10,12 +10,12 @@ import FloatingActionButton from 'material-ui/FloatingActionButton'
 import Back from 'material-ui/svg-icons/navigation/arrow-back'
 import NewFolder from 'material-ui/svg-icons/file/create-new-folder'
 import TextField from 'material-ui/TextField'
+import Add from 'material-ui/svg-icons/content/add'
 import Popover from 'material-ui/Popover'
 import Menu from 'material-ui/Menu'
 import MenuItem from 'material-ui/MenuItem'
 import Paper from 'material-ui/Paper'
 import {blue500, grey600} from 'material-ui/styles/colors'
-import sad from "./../../images/sad.png"
 
 
 class Folder extends React.Component {
@@ -34,11 +34,7 @@ class Folder extends React.Component {
     })
   }
 
-  closeInput = () => {
-    this.setState({
-      open: false
-    })
-  }
+  closeInput = () => { this.setState({ open: false }) }
 
   deleteFile = (key, folder) => {
     if (folder == false) {
@@ -234,7 +230,9 @@ class Folder extends React.Component {
             />
           </Paper>
         </div>
-        {files}
+        <div>
+          {files}
+        </div>
       </div>
     )
   }
