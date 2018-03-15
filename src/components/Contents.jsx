@@ -51,8 +51,14 @@ class Contents extends React.Component {
       },
       full: {
         maxWidth: '100%',
+        maxHeight: window.innerWidth * .5,
+        margin: 'auto',
+        display: 'block'
+      },
+      preview: {
+        maxWidth: '100%',
         maxHeight: '100%',
-        margin: '0 auto',
+        margin: 'auto',
         display: 'block'
       }
     }
@@ -89,7 +95,7 @@ class Contents extends React.Component {
                 </IconButton>
               }
             >
-              <img src={file.url} onClick={() => this.showImage(file.url)} style={styles.full}/>
+              <img src={file.url} onClick={() => this.showImage(file.url)} style={styles.preview}/>
               <Dialog open={this.state.open} onRequestClose={this.hideImage}>
                 <img src={this.state.img} hidden={!this.state.img} style={styles.full}/>
               </Dialog>

@@ -230,9 +230,7 @@ class Folder extends React.Component {
             />
           </Paper>
         </div>
-        <div>
-          {files}
-        </div>
+        {files}
       </div>
     )
   }

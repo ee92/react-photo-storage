@@ -29,7 +29,6 @@ class Preview extends React.Component {
   }
 
   storePhoto = (file) => {
-    console.log(file)
     const key = database.ref(this.props.user.uid).push().key
     const image = storage.ref(this.props.user.uid).child(key)
     image.put(file).then((snap) => {
