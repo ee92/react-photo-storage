@@ -1,5 +1,5 @@
 const React = require('react')
-const Caption = require('./Caption')
+import Dialog from 'material-ui/Dialog'
 import firebase, { database } from '../firebase'
 import IconButton from 'material-ui/IconButton'
 import Delete from 'material-ui/svg-icons/action/delete'
@@ -17,6 +17,25 @@ import {blue500, grey600, red500, red100} from 'material-ui/styles/colors'
 
 class Contents extends React.Component {
 
+  state = {
+    open: false,
+    img: null
+  }
+
+  showImage = (img) => {
+    this.setState({
+      open: true,
+      img
+    })
+  }
+
+  hideImage = () => {
+    this.setState({
+      open: false,
+      img: null
+    })
+  }
+
   render() {
 
     const styles = {
@@ -29,6 +48,12 @@ class Contents extends React.Component {
       },
       button: {
         cursor: 'pointer'
+      },
+      full: {
+        maxWidth: '100%',
+        maxHeight: '100%',
+        margin: '0 auto',
+        display: 'block'
       }
     }
 
@@ -64,7 +89,10 @@ class Contents extends React.Component {
                 </IconButton>
               }
             >
-              <img src={file.url}/>
+              <img src={file.url} onClick={() => this.showImage(file.url)} style={styles.full}/>
+              <Dialog open={this.state.open} onRequestClose={this.hideImage}>
+                <img src={this.state.img} hidden={!this.state.img} style={styles.full}/>
+              </Dialog>
             </GridTile>
           )}
         </GridList>
